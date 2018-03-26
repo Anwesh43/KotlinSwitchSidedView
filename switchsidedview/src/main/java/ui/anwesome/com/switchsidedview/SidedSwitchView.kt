@@ -3,6 +3,7 @@ package ui.anwesome.com.switchsidedview
 /**
  * Created by anweshmishra on 27/03/18.
  */
+import android.app.Activity
 import android.graphics.*
 import android.content.*
 import android.view.*
@@ -110,6 +111,13 @@ class SidedSwitchView(ctx : Context) : View(ctx) {
             sidedSwitch.startUpdating {
                 animator.start()
             }
+        }
+    }
+    companion object {
+        fun create(activity : Activity) : SidedSwitchView {
+            val view : SidedSwitchView = SidedSwitchView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
