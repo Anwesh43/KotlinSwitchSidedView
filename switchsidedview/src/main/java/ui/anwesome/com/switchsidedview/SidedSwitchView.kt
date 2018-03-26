@@ -66,4 +66,31 @@ class SidedSwitchView(ctx : Context) : View(ctx) {
             }
         }
     }
+    data class SidedSwitch (var i : Int, val state : State = State()) {
+        fun draw(canvas : Canvas, paint : Paint) {
+            val w = canvas.width.toFloat()
+            val h = canvas.height.toFloat()
+            val edgeSide = Math.min(w, h) / 3
+            paint.strokeWidth = edgeSide / 20
+            canvas.save()
+            canvas.translate(w / 2, h / 2)
+            for (i in 0..5) {
+                canvas.save()
+                canvas.rotate(60f)
+                paint.color = Color.WHITE
+                canvas.drawLine(0f, 0f, edgeSide * state.scales[0], 0f, paint)
+                paint.color = Color.parseColor("#3498db")
+                canvas.drawLine(0f, 0f, edgeSide * state.scales[2], 0f, paint)
+                canvas.drawCircle(0f, edgeSide * state.scales[2], (edgeSide/6) * state.scales[1], paint)
+                canvas.restore()
+            }
+            canvas.restore()
+        }
+        fun update(stopcb : (Float) -> Unit) {
+            state.update(stopcb)
+        }
+        fun startUpdating(startcb : () -> Unit) {
+            state.startUpdating(startcb)
+        }
+    }
 }
