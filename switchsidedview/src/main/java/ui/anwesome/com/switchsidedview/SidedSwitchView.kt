@@ -22,7 +22,7 @@ class SidedSwitchView(ctx : Context) : View(ctx) {
         return true
     }
     data class State(var prevScale : Float = 0f, var dir : Int = 0, var j : Int = 0) {
-        val scales : Array<Float> = arrayOf(0f, 0f, 0f)
+        val scales : Array<Float> = arrayOf(0f, 0f, 0f, 0f)
         fun update(stopcb : (Float) -> Unit) {
             scales[j] += 0.1f * dir
             if (Math.abs(scales[j] - prevScale) > 1) {
@@ -74,16 +74,18 @@ class SidedSwitchView(ctx : Context) : View(ctx) {
             val h = canvas.height.toFloat()
             val edgeSide = Math.min(w, h) / 3
             paint.strokeWidth = edgeSide / 20
+            paint.strokeCap = Paint.Cap.ROUND
             canvas.save()
             canvas.translate(w / 2, h / 2)
+            canvas.rotate(90f * state.scales[3])
             for (i in 0..5) {
                 canvas.save()
-                canvas.rotate(60f)
+                canvas.rotate(60f * i)
                 paint.color = Color.WHITE
                 canvas.drawLine(0f, 0f, edgeSide * state.scales[0], 0f, paint)
                 paint.color = Color.parseColor("#3498db")
                 canvas.drawLine(0f, 0f, edgeSide * state.scales[2], 0f, paint)
-                canvas.drawCircle(0f, edgeSide * state.scales[2], (edgeSide/6) * state.scales[1], paint)
+                canvas.drawCircle(edgeSide * state.scales[2], 0f, (edgeSide/12) * state.scales[1], paint)
                 canvas.restore()
             }
             canvas.restore()
