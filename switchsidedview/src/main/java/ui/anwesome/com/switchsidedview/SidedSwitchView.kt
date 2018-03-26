@@ -93,4 +93,22 @@ class SidedSwitchView(ctx : Context) : View(ctx) {
             state.startUpdating(startcb)
         }
     }
+    data class Renderer(var view : SidedSwitchView) {
+        val sidedSwitch : SidedSwitch = SidedSwitch(0)
+        val animator : Animator = Animator(view)
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            sidedSwitch.draw(canvas, paint)
+            animator.animate {
+                sidedSwitch.update {
+                    animator.stop()
+                }
+            }
+        }
+        fun handleTap() {
+            sidedSwitch.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
